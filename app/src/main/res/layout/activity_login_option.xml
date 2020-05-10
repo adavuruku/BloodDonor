@@ -58,6 +58,19 @@
         app:layout_constraintGuide_percent=".88" />
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/h7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".95" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/h8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".99" />
+
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/v1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -90,12 +103,12 @@
         android:gravity="bottom"
         android:padding="10dip"
         app:centered="true"
-        app:fillColor="#fff"
+        app:fillColor="#FF0000"
         app:layout_constraintBottom_toTopOf="@+id/h2in"
         app:layout_constraintEnd_toStartOf="@+id/v2"
         app:layout_constraintStart_toStartOf="@+id/v1"
         app:layout_constraintTop_toTopOf="@+id/h2"
-        app:pageColor="#FF0000"
+        app:pageColor="#9B9999"
         app:snap="false" />
     <Button
         android:id="@+id/button"
@@ -125,5 +138,17 @@
         app:layout_constraintEnd_toStartOf="@+id/v2"
         app:layout_constraintStart_toStartOf="@+id/v1"
         app:layout_constraintTop_toTopOf="@+id/h5" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/about"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/h8"
+        app:layout_constraintEnd_toStartOf="@+id/v2"
+        app:layout_constraintStart_toStartOf="@+id/v1"
+        app:layout_constraintTop_toTopOf="@+id/h7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
