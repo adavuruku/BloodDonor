@@ -2,10 +2,15 @@ package com.example.blooddonor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class RegisterUser extends AppCompatActivity {
 
@@ -13,6 +18,13 @@ public class RegisterUser extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_user);
+
+        TextView login = findViewById(R.id.login);
+        String forg = "Already a member? Login";
+        ForegroundColorSpan forcolor = new ForegroundColorSpan(Color.RED);
+        SpannableString spanP = new SpannableString(forg);
+        spanP.setSpan (forcolor,18,forg.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        login.setText(spanP);
 
         Spinner state = findViewById(R.id.state);
         Spinner blood = findViewById(R.id.bloodtype);

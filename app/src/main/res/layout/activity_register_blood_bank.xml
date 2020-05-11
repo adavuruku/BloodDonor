@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterUser">
+    tools:context=".RegisterBloodBank">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/h1"
@@ -85,7 +85,7 @@
         android:id="@+id/textView3"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="@string/registerdonor"
+        android:text="@string/registerbloodbank"
         android:textColor="@color/colorWhite"
         android:textSize="30sp"
         android:textStyle="bold"

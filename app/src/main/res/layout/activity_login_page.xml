@@ -4,55 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterUser">
+    tools:context=".LoginPage">
+
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/h1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0" />
+        app:layout_constraintGuide_percent=".1" />
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/h2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".05" />
+        app:layout_constraintGuide_percent=".17" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/h3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".12" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/h5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".13" />
+        app:layout_constraintGuide_percent=".2" />
+
+
+
+
+
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/h4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".15" />
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/h6a"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".93" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/h6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".95" />
+        app:layout_constraintGuide_percent=".90" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/v1"
@@ -74,7 +62,7 @@
         android:layout_width="411dp"
         android:layout_height="0dp"
         android:background="@drawable/downcorner"
-        app:layout_constraintBottom_toTopOf="@+id/h5"
+        app:layout_constraintBottom_toTopOf="@+id/h3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,14 +73,14 @@
         android:id="@+id/textView3"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="@string/registerdonor"
+        android:text="@string/login"
         android:textColor="@color/colorWhite"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/h3"
+        app:layout_constraintBottom_toTopOf="@+id/h2"
         app:layout_constraintEnd_toStartOf="@+id/v2"
         app:layout_constraintStart_toStartOf="@+id/v1"
-        app:layout_constraintTop_toTopOf="@+id/h2" />
+        app:layout_constraintTop_toTopOf="@+id/h1" />
 
     <TextView
         android:id="@+id/textView4"
@@ -102,22 +90,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/h6" />
+        app:layout_constraintTop_toTopOf="@+id/h4" />
 
     <androidx.core.widget.NestedScrollView
-        android:fillViewport="true"
         android:id="@+id/pager"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:alpha=".6"
+        android:fillViewport="true"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/h6a"
+        app:layout_constraintBottom_toTopOf="@+id/h4"
         app:layout_constraintEnd_toStartOf="@+id/v2"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/v1"
-        app:layout_constraintTop_toTopOf="@+id/h4"
+        app:layout_constraintTop_toTopOf="@+id/h3"
         app:layout_constraintVertical_bias="0.0">
-        <include layout="@layout/registeruserform"/>
+
+        <include layout="@layout/loginform" />
     </androidx.core.widget.NestedScrollView>
 
 

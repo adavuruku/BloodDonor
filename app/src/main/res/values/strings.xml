@@ -3,6 +3,14 @@
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="about">About Blood Donor</string>
+    <string name="hospital">Hospital</string>
+    <string name="bloodbank">Blood Bank</string>
+    <string name="donor">Donor</string>
+    <string name="registeras">Register as a</string>
+    <string name="registerhospita">Register Hospital</string>
+    <string name="registerdonor">Register Donor</string>
+    <string name="registerbloodbank">Register Blood Bank</string>
+    <string name="yet">Don\'t have an account?</string>
     <string-array name="statesList">
         <item>Select State</item>
         <item>Abuja</item>
@@ -51,8 +59,12 @@
     <string-array name="bloodList">
         <item>Select Blood</item>
         <item>A+</item>
-        <item>O-</item>
-        <item>AB</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>AB+</item>
+        <item>AB-</item>
         <item>O+</item>
+        <item>O-</item>
     </string-array>
 </resources>
