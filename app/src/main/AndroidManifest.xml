@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.blooddonor">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -11,25 +12,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".about"></activity>
-        <activity android:name=".LoginPage"></activity>
-        <activity android:name=".RegisterBloodBank" >
+        <activity android:name=".HomeScreen"
+            android:label="@string/dashboard"/>
+        <activity
+            android:name=".about"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".LoginPage"
+            android:label="@string/login" />
+        <activity
+            android:name=".RegisterBloodBank"
+            android:label="@string/registerbloodbank" />
+        <activity
+            android:name=".RegisterHospital"
+            android:label="@string/registerhospita" />
+        <activity
+            android:name=".RegisterUser"
+            android:label="@string/registerdonor" />
+        <activity
+            android:name=".LoginOption"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterHospital" >
-
-        </activity>
-        <activity android:name=".RegisterUser">
-
-        </activity>
-        <activity android:name=".LoginOption"></activity>
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

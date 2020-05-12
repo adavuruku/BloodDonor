@@ -11,6 +11,7 @@
     <string name="registerdonor">Register Donor</string>
     <string name="registerbloodbank">Register Blood Bank</string>
     <string name="yet">Don\'t have an account?</string>
+    <string name="dashboard">Blood Donor Dashboard.</string>
     <string-array name="statesList">
         <item>State</item>
         <item>Abuja</item>

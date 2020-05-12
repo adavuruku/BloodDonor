@@ -179,7 +179,7 @@
         app:layout_constraintTop_toTopOf="@+id/h8" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/login"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/buttonshapetwo"
@@ -193,7 +193,7 @@
         app:layout_constraintTop_toTopOf="@+id/h10" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/about"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/about"

@@ -199,7 +199,7 @@ public class RegisterBloodBank extends AppCompatActivity implements AdapterView.
                         }else{
 //                            allResult = response;
                             new ReadJSON().execute();
-                            displayMessage(response);
+//                            displayMessage(response);
                         }
                     }
                 },
@@ -264,10 +264,10 @@ public class RegisterBloodBank extends AppCompatActivity implements AdapterView.
                     pd.hide();
                 }
                 Toast.makeText(getApplicationContext(),"Welcome "+ fullname + " To BLOOD DONOR - MOBILE APP",Toast.LENGTH_LONG).show();
-//                Intent intent = new Intent(getApplication(), HomeScreen.class);
-//                startActivity(intent);
-//                overridePendingTransition(R.anim.right_in, R.anim.left_out);
-//                finish();
+                Intent intent = new Intent(getApplication(), HomeScreen.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
             } catch (Exception e) {
                 e.printStackTrace();
                 displayMessage("Error: No Internet Connection !!!");

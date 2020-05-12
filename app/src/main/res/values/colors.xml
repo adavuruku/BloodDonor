@@ -6,4 +6,6 @@
     <color name="colorWhite">#ffff</color>
     <color name="colorGray">@android:color/darker_gray</color>
     <color name="fairwhite">#C6C5C5</color>
+    <color name="colorBlack">#070707</color>
+    <color name="colorText">#909699</color>
 </resources>

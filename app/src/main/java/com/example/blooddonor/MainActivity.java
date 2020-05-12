@@ -2,15 +2,45 @@ package com.example.blooddonor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
-
+    private SharedPreferences LoginUserPhone;
+    String UserPhone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        LoginUserPhone = this.getSharedPreferences("LoginUserPhone", this.MODE_PRIVATE);
+        UserPhone= LoginUserPhone.getString("LoginUserPhone", "");
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startProg();
+            }
+        },3000);
+
+
+    }
+
+    public void startProg() {
+        if (UserPhone.equals("")){
+            Intent intent = new Intent(getApplicationContext(), LoginOption.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            finish();
+        }else{
+            Intent intent = new Intent(getApplication(), HomeScreen.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            finish();
+        }
     }
 
     @Override
