@@ -76,6 +76,7 @@ public class RegisterUser extends AppCompatActivity implements AdapterView.OnIte
     private Validator validator;
     dbHelper dbHelper;
     Button submit;
+    TextView login;
     SharedPreferences LoginUserPhone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,11 +155,22 @@ public class RegisterUser extends AppCompatActivity implements AdapterView.OnIte
         confirmPasswordE = findViewById(R.id.confirmPassword);
         lgovE = findViewById(R.id.lgov);
         submit = findViewById(R.id.register);
+        login = findViewById(R.id.login);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 validator.validate();
+            }
+        });
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplication(), LoginPage.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
             }
         });
     }
