@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.blooddonor">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -12,13 +14,15 @@
         <activity android:name=".about"></activity>
         <activity android:name=".LoginPage"></activity>
         <activity android:name=".RegisterBloodBank" />
-        <activity android:name=".HospitalReg" />
-        <activity android:name=".RegisterUser">
+        <activity android:name=".RegisterHospital" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".RegisterUser">
+
         </activity>
         <activity android:name=".LoginOption"></activity>
         <activity

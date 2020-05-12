@@ -7,6 +7,8 @@ import android.provider.BaseColumns;
  */
 
 public class dbColumnList {
+    public static String serveraddress = "https://antenantal.000webhostapp.com/blooddonorrest.php";
+
     public static class usersRecord implements BaseColumns{
         public static final String TABLE_NAME = "usersRecord";
         public static final String COLUMN_FULLNAME = "fullname";

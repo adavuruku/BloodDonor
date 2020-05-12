@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BloodDonor</string>
+    <string name="app_name">Blood Donor</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="about">About Blood Donor</string>
@@ -12,7 +12,7 @@
     <string name="registerbloodbank">Register Blood Bank</string>
     <string name="yet">Don\'t have an account?</string>
     <string-array name="statesList">
-        <item>Select State</item>
+        <item>State</item>
         <item>Abuja</item>
         <item>Abia</item>
         <item>Adamawa</item>
@@ -52,12 +52,12 @@
         <item>Zamfara</item>
     </string-array>
     <string-array name="genderList">
-        <item>Select Gender</item>
+        <item>Gender</item>
         <item>Female</item>
         <item>Male</item>
     </string-array>
     <string-array name="bloodList">
-        <item>Select Blood</item>
+        <item>Blood Type</item>
         <item>A+</item>
         <item>A-</item>
         <item>B+</item>

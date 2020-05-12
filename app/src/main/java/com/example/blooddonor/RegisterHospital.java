@@ -40,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RegisterUser extends AppCompatActivity implements AdapterView.OnItemSelectedListener,Validator.ValidationListener {
+public class RegisterHospital extends AppCompatActivity implements AdapterView.OnItemSelectedListener,Validator.ValidationListener {
     String fullname, email, phone, contactAddress, password, confirmPassword, gender,bloodtype, state,type, lgov;
     @NotEmpty
     EditText fullnameE;
@@ -68,7 +68,7 @@ public class RegisterUser extends AppCompatActivity implements AdapterView.OnIte
     @NotEmpty
     EditText  lgovE;
 
-    Spinner genderE,bloodtypeE, stateE;
+    Spinner stateE;
 
     ProgressDialog pd;
     AlertDialog.Builder builder;
@@ -80,8 +80,8 @@ public class RegisterUser extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_user);
-        type = "Donor";
+        setContentView(R.layout.activity_hospital_reg);
+        type = "Hospital";
         LoginUserPhone = this.getSharedPreferences("LoginUserPhone", this.MODE_PRIVATE);
         createTextSpan();
 
@@ -89,23 +89,13 @@ public class RegisterUser extends AppCompatActivity implements AdapterView.OnIte
 
         validator = new Validator(this);
         validator.setValidationListener(this);
+
+
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this,
                 R.array.statesList, android.R.layout.simple_list_item_checked);
         stateAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
         stateE.setAdapter(stateAdapter);
         stateE.setOnItemSelectedListener(this);
-
-        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this,
-                R.array.genderList, android.R.layout.simple_list_item_checked);
-        genderAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
-        genderE.setAdapter(genderAdapter);
-        genderE.setOnItemSelectedListener(this);
-
-        ArrayAdapter<CharSequence> bloodAdapter = ArrayAdapter.createFromResource(this,
-                R.array.bloodList, android.R.layout.simple_list_item_checked);
-        bloodAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
-        bloodtypeE.setAdapter(bloodAdapter);
-        bloodtypeE.setOnItemSelectedListener(this);
 
         pd = new ProgressDialog(this);
         pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -143,8 +133,6 @@ public class RegisterUser extends AppCompatActivity implements AdapterView.OnIte
 
     public void intializeComponents(){
         stateE = findViewById(R.id.state);
-        bloodtypeE = findViewById(R.id.bloodtype);
-        genderE = findViewById(R.id.gender);
 
         fullnameE = findViewById(R.id.fullname);
         emailE = findViewById(R.id.email);
@@ -188,7 +176,7 @@ public class RegisterUser extends AppCompatActivity implements AdapterView.OnIte
         }
         pd.show();
         String  REQUEST_TAG = "com.volley.volleyJsonArrayRequest";
-        StringRequest registerDonorRequest = new StringRequest(Request.Method.POST, url,
+        StringRequest registerHospitalRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
                     @Override
@@ -218,14 +206,12 @@ public class RegisterUser extends AppCompatActivity implements AdapterView.OnIte
             protected Map<String, String> getParams()
             {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("opr", "registerdonor");
+                params.put("opr", "registerother");
                 params.put("fullname", fullname);
                 params.put("email", email);
                 params.put("phone", phone);
                 params.put("contactAddress", contactAddress);
                 params.put("password", password);
-                params.put("gender", gender);
-                params.put("bloodtype", bloodtype);
                 params.put("state", state);
                 params.put("lgov", lgov);
                 params.put("type", type);
@@ -233,12 +219,12 @@ public class RegisterUser extends AppCompatActivity implements AdapterView.OnIte
             }
         };
 
-        registerDonorRequest.setRetryPolicy(new DefaultRetryPolicy(
+        registerHospitalRequest.setRetryPolicy(new DefaultRetryPolicy(
                 3000,
                 2,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(registerDonorRequest, REQUEST_TAG);
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(registerHospitalRequest, REQUEST_TAG);
     }
 
 
@@ -246,15 +232,15 @@ public class RegisterUser extends AppCompatActivity implements AdapterView.OnIte
 
         @Override
         protected String doInBackground(String... strings) {
-                SharedPreferences.Editor editor;
-                dbHelper = new dbHelper(getApplicationContext());
+            SharedPreferences.Editor editor;
+            dbHelper = new dbHelper(getApplicationContext());
 
-                dbHelper.SaveUserInformation(fullname,phone,email,gender,bloodtype,
-                        state,lgov,contactAddress,type
-                );
-                editor = LoginUserPhone.edit();
-                editor.putString("LoginUserPhone",phone);
-                editor.apply();
+            dbHelper.SaveUserInformation(fullname,phone,email,gender,bloodtype,
+                    state,lgov,contactAddress,type
+            );
+            editor = LoginUserPhone.edit();
+            editor.putString("LoginUserPhone",phone);
+            editor.apply();
             return null;
         }
 
@@ -328,10 +314,8 @@ public class RegisterUser extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onValidationSucceeded() {
-        if(gender.isEmpty() || gender.equalsIgnoreCase("Gender") ||
-                bloodtype.isEmpty() || bloodtype.equalsIgnoreCase("Blood Type") ||
-                state.isEmpty() || state.equalsIgnoreCase("State") ){
-           displayMessage("Either Gender, State or Blood Type Is Not Selected");
+        if(state.isEmpty() || state.equalsIgnoreCase("State") ){
+            displayMessage("Either Gender, State or Blood Type Is Not Selected");
         }else{
             retrieveContents();
             volleyJsonArrayRequest(dbColumnList.serveraddress);
