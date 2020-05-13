@@ -220,18 +220,15 @@ public class LoginPage extends AppCompatActivity implements Validator.Validation
                 JSONObject jsonobject = new JSONObject(allResult);
                 fullname = jsonobject.getString("fullname");
                 dbHelper.SaveUserInformation(
-                        jsonobject.getString("fullname"),
-                        jsonobject.getString("phone"),
-                        jsonobject.getString("email"),
-                        jsonobject.getString("gender"),
-                        jsonobject.getString("bloodtype"),
-                        jsonobject.getString("userstate"),
-                        jsonobject.getString("localgovt"),
-                        jsonobject.getString("address"),
-                        jsonobject.getString("usertype")
+                        jsonobject.getString("fullname"), jsonobject.getString("phone"),
+                        jsonobject.getString("email"), jsonobject.getString("gender"),
+                        jsonobject.getString("bloodtype"), jsonobject.getString("userstate"),
+                        jsonobject.getString("localgovt"), jsonobject.getString("address"),
+                        jsonobject.getString("usertype"), jsonobject.getString("active"),
+                        jsonobject.getString("dateReg")
                 );
                 editor = LoginUserPhone.edit();
-                editor.putString("LoginUserPhone",phone);
+                editor.putString("LoginUserPhone",jsonobject.getString("phone"));
                 editor.apply();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -248,6 +245,7 @@ public class LoginPage extends AppCompatActivity implements Validator.Validation
                     pd.hide();
                 }
                 Toast.makeText(getApplicationContext(),"Welcome "+ fullname + " To BLOOD DONOR - MOBILE APP",Toast.LENGTH_LONG).show();
+                dbColumnList.fromlogin = "login";
                 Intent intent = new Intent(getApplication(), HomeScreen.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);

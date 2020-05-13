@@ -13,6 +13,16 @@
     <string name="yet">Don\'t have an account?</string>
     <string name="dashboard">Blood Donor Dashboard.</string>
     <string name="profile">My Profile</string>
+    <string name="allrequest">All Blood Request</string>
+    <string name="request">Create Request</string>
+    <string name="delete">Delete</string>
+    <string name="updateprofile">Update Profile</string>
+    <string name="emergency">Emergency</string>
+    <string name="myrequest">My Request</string>
+    <string name="facts">Facts</string>
+    <string name="calculate">Eligibility Test</string>
+    <string name="updatebank">Update Bank</string>
+    <string name="load">Loading...</string>
     <string-array name="statesList">
         <item>State</item>
         <item>Abuja</item>

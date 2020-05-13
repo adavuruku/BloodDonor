@@ -6,4 +6,214 @@
     android:orientation="vertical"
     tools:showIn="@layout/dashboardmenu">
 
+    <LinearLayout
+        android:id="@+id/updateprofile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/touch_selector"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/updateprofile"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/updateprofile"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update Your Profile"
+            android:textColor="@color/colorText"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/hospital"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/touch_selector"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_hospitalgud"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hospital"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View All Hospitals"
+            android:textColor="@color/colorText"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/emergency"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/touch_selector"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_emergency"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/emergency"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Emergency Request"
+            android:textColor="@color/colorText"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/myrequest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/touch_selector"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_menu"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/myrequest"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Your Blood Request"
+            android:textColor="@color/colorText"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/updatebank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/touch_selector"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_update"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/updatebank"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update Blood Type In Bank"
+            android:textColor="@color/colorText"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/facts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/touch_selector"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_facts"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/facts"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+        <TextView
+            android:id="@+id/allrequestcontent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Facts About Blood Donation"
+            android:textColor="@color/colorText"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/touch_selector"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_about"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="About Blood Donor"
+            android:textColor="@color/colorText"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
 </LinearLayout>

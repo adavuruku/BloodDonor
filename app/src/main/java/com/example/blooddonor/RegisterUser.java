@@ -209,8 +209,7 @@ public class RegisterUser extends AppCompatActivity implements AdapterView.OnIte
                             displayMessage("Error: Unable To Create Account \n" +
                                     "Please ReTry!!!");
                         }else{
-//                            allResult = response;
-                            new ReadJSON().execute();
+                            GoToHomeScreen();
 //                            displayMessage(response);
                         }
                     }
@@ -254,41 +253,22 @@ public class RegisterUser extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
-    class ReadJSON extends AsyncTask<String, Integer, String> {
+    public void GoToHomeScreen(){
+        SharedPreferences.Editor editor;
+        editor = LoginUserPhone.edit();
+        editor.putString("LoginUserPhone",phone);
+        editor.apply();
 
-        @Override
-        protected String doInBackground(String... strings) {
-                SharedPreferences.Editor editor;
-                dbHelper = new dbHelper(getApplicationContext());
-
-                dbHelper.SaveUserInformation(fullname,phone,email,gender,bloodtype,
-                        state,lgov,contactAddress,type
-                );
-                editor = LoginUserPhone.edit();
-                editor.putString("LoginUserPhone",phone);
-                editor.apply();
-            return null;
+        if(pd.isShowing()){
+            pd.cancel();
+            pd.hide();
         }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                if(pd.isShowing()){
-                    pd.cancel();
-                    pd.hide();
-                }
-                Toast.makeText(getApplicationContext(),"Welcome "+ fullname + " To BLOOD DONOR - MOBILE APP",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplication(), HomeScreen.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                finish();
-            } catch (Exception e) {
-                e.printStackTrace();
-                displayMessage("Error: No Internet Connection !!!");
-            }
-
-            super.onPostExecute(s);
-        }
+        Toast.makeText(getApplicationContext(),"Welcome "+ fullname + " To BLOOD DONOR - MOBILE APP",Toast.LENGTH_LONG).show();
+        dbColumnList.fromlogin = "login";
+        Intent intent = new Intent(getApplication(), HomeScreen.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        finish();
     }
 
 

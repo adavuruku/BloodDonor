@@ -12,13 +12,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="15dp"
-        android:background="@drawable/buttonshapetwo"
+        android:background="@drawable/touch_selector"
         android:padding="10dp">
 
         <TextView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:background="@drawable/abminus"
+            android:background="@drawable/myprofile"
             android:layout_gravity="center"/>
         <TextView
             android:layout_width="match_parent"
@@ -37,35 +37,177 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/donors"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="15dp"
-        android:background="@drawable/buttonshapetwo"
+        android:background="@drawable/touch_selector"
         android:padding="10dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_image"
+        <TextView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:src="@drawable/search"
-            app:civ_border_color="@color/colorWhite"
-            app:civ_border_width="2dp"/>
+            android:background="@drawable/ic_donors"
+            android:layout_gravity="center"/>
         <TextView
-            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/profile"
+            android:text="@string/donor"
             android:textColor="@color/colorBlack"
             android:gravity="center"
             android:fontFamily="sans-serif-medium"/>
         <TextView
-            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="View Your Profile"
+            android:text="View Donors"
+            android:textColor="@color/colorText"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bloodbank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/touch_selector"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_blood_bank"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bloodbank"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Blood Banks"
+            android:textColor="@color/colorText"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/createrequest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/touch_selector"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_blood_bag"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/request"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create Blood Request"
+            android:textColor="@color/colorText"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/allrequest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/touch_selector"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_blood_test"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/allrequest"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View All Blood Request"
+            android:textColor="@color/colorText"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/calculate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/touch_selector"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/calender"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/calculate"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Blood Donation Eligibility Test"
+            android:textColor="@color/colorText"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/touch_selector"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_database"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/delete"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete My Account"
             android:textColor="@color/colorText"
             android:gravity="center"
             android:fontFamily="sans-serif-medium"/>

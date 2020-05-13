@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
             finish();
         }else{
+            dbColumnList.fromlogin = "existing";
             Intent intent = new Intent(getApplication(), HomeScreen.class);
             startActivity(intent);
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
