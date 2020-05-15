@@ -16,18 +16,22 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:padding="10dp"
+            android:background="@drawable/calcresult"
+            android:gravity="center"
             xmlns:tools="http://schemas.android.com/tools"
             android:orientation="vertical">
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/nodonor"
-                android:text="305"
-                android:textColor="@color/colorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:padding="10dp"
+                android:background="@drawable/circle"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
                 android:layout_weight="3"
-                android:gravity="center"
-                android:fontFamily="sans-serif-medium"/>
+                android:gravity="center"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,18 +45,22 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:padding="10dp"
+            android:background="@drawable/calcresult"
+            android:gravity="center"
             xmlns:tools="http://schemas.android.com/tools"
             android:orientation="vertical">
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/nohospital"
-                android:text="35"
-                android:textColor="@color/colorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:padding="10dp"
+                android:background="@drawable/circle"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
                 android:layout_weight="3"
-                android:gravity="center"
-                android:fontFamily="sans-serif-medium"/>
+                android:gravity="center"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,22 +80,26 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:padding="10dp"
+            android:background="@drawable/calcresult"
+            android:gravity="center"
             xmlns:tools="http://schemas.android.com/tools"
             android:orientation="vertical">
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="305"
-                android:id="@+id/nobank"
-                android:textColor="@color/colorBlack"
+                android:text="0"
+                android:padding="10dp"
+                android:background="@drawable/circle"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
                 android:layout_weight="3"
                 android:gravity="center"
-                android:fontFamily="sans-serif-medium"/>
+                android:id="@+id/nobank"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Registered Blood Banks"
+                android:text="Blood Banks"
                 android:textColor="@color/colorText"
                 android:gravity="center"
                 android:fontFamily="sans-serif-medium"/>
@@ -97,18 +109,23 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:padding="5dp"
+
+            android:gravity="center"
+            android:padding="10dp"
+            android:background="@drawable/calcresult"
             xmlns:tools="http://schemas.android.com/tools"
             android:orientation="vertical">
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="35"
                 android:id="@+id/norequest"
-                android:textColor="@color/colorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:padding="10dp"
+                android:background="@drawable/circle"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
                 android:layout_weight="3"
-                android:gravity="center"
-                android:fontFamily="sans-serif-medium"/>
+                android:gravity="center"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -3,8 +3,10 @@ package com.example.blooddonor;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -18,7 +20,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,17 +40,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HomeScreen extends AppCompatActivity {
+public class HomeScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     private SharedPreferences LoginUserPhone;
-    String loginPhone,alldonor, allusers, allbloodbank;
+    String loginPhone,alldonor, allusers, allbloodbank,bloodtype,unitsize;
     dbHelper dbHelper;
     Handler mHandler;
     ProgressDialog pd;
     AlertDialog.Builder builder;
-    LinearLayout myprofile,updateprofile,createrequest,about;
+    ArrayAdapter<CharSequence> bloodAdapter;
+    DatePickerDialog.OnDateSetListener setListener;
+    int year, month, day;
+    LinearLayout myprofile,updateprofile,createrequest,about,calculate,updatebank,
+    delete;
     int alldone = 0;
     String userType;
     @Override
@@ -84,6 +98,27 @@ public class HomeScreen extends AppCompatActivity {
         }else{
             mStatusChecker.run();
         }
+    }
+
+    public void displayMessage(String msg) {
+        if(pd.isShowing()){
+            pd.hide();
+            pd.cancel();
+        }
+        builder = new AlertDialog.Builder(this);
+        builder.setMessage(msg);
+        builder.setTitle(R.string.app_name);
+        builder.setIcon(R.mipmap.ic_launcher_round);
+        builder.setCancelable(false);
+        builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
+        alert.show();
     }
 
     Runnable mStatusChecker = new Runnable() {
@@ -136,6 +171,8 @@ public class HomeScreen extends AppCompatActivity {
                         if (response.length()>2){
                             alldonor = response;
                             new ProcessDonors().execute();
+                        }else{
+                            loadStatistic();
                         }
                     }
                 },
@@ -143,6 +180,7 @@ public class HomeScreen extends AppCompatActivity {
                 {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        loadStatistic();
                     }
                 }
         ) {
@@ -174,6 +212,8 @@ public class HomeScreen extends AppCompatActivity {
                         if (response.length()>2){
                             allusers = response;
                             new ProcessUsers().execute();
+                        }else{
+                            loadStatistic();
                         }
                     }
                 },
@@ -181,6 +221,7 @@ public class HomeScreen extends AppCompatActivity {
                 {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        loadStatistic();
                     }
                 }
         ) {
@@ -212,6 +253,8 @@ public class HomeScreen extends AppCompatActivity {
                         if (response.length()>2){
                             allbloodbank = response;
                             new ProcessBloodBank().execute();
+                        }else{
+                            loadStatistic();
                         }
                     }
                 },
@@ -241,7 +284,8 @@ public class HomeScreen extends AppCompatActivity {
 
 
 
-//AFTER DB OPERATION
+
+    //AFTER DB OPERATION
 class  ProcessDonors extends AsyncTask<String, Integer, String> {
     @Override
     protected String doInBackground(String... strings) {
@@ -430,6 +474,31 @@ class  ProcessDonors extends AsyncTask<String, Integer, String> {
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
+
+        calculate = findViewById(R.id.calculate);
+        calculate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               showCalculator();
+            }
+        });
+
+        updatebank = findViewById(R.id.updatebank);
+        updatebank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showBankUpdate();
+            }
+        });
+
+
+        delete = findViewById(R.id.delete);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayDeleteAccountMsg();
+            }
+        });
     }
 
     public void showProfile(){
@@ -491,6 +560,183 @@ class  ProcessDonors extends AsyncTask<String, Integer, String> {
 
 
 
+    public void showCalculator(){
+
+        View snackView = getLayoutInflater().inflate(R.layout.customcalculatedonation, null);
+        final TextView calcdonorresult = snackView.findViewById(R.id.calcdonorresult);
+        final Button calculatenow = snackView.findViewById(R.id.calculatenow);
+
+        Calendar calender = Calendar.getInstance();
+        year = calender.get(Calendar.YEAR);
+        month = calender.get(Calendar.MONTH);
+        day = calender.get(Calendar.DAY_OF_MONTH);
+
+        calculatenow.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        HomeScreen.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        setListener,year, month, day);
+                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                datePickerDialog.show();
+            }
+        });
+
+
+        setListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                Calendar cal = Calendar.getInstance();
+                cal.set(year,month,dayOfMonth);
+                String DATE_FORMAT= "EEE, d MMM yyyy, HH:mm:ss";
+                SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+                String displayDate = dateFormat.format(cal.getTime());
+                calculatenow.setText(displayDate);
+
+                cal.add(Calendar.DATE, 56);
+                calcdonorresult.setText(dateFormat.format(cal.getTime()));
+            }
+        };
+
+
+        final Dialog d = new Dialog(HomeScreen.this);
+        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        d.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        d.setCanceledOnTouchOutside(true);
+        d.setContentView(snackView);
+        d.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation_2;
+        d.show();
+    }
+
+    public void showBankUpdate(){
+
+        View snackView = getLayoutInflater().inflate(R.layout.customupdatebank, null);
+        final Spinner bloodtypeE = snackView.findViewById(R.id.bloodtype);
+        final EditText unit = snackView.findViewById(R.id.unit);
+        final Button register = snackView.findViewById(R.id.register);
+
+        bloodAdapter = ArrayAdapter.createFromResource(this,
+                R.array.bloodList, android.R.layout.simple_list_item_checked);
+        bloodAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
+        bloodtypeE.setAdapter(bloodAdapter);
+        bloodtypeE.setOnItemSelectedListener(HomeScreen.this);
+
+        register.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(getApplicationContext(),"Welcome "+ bloodtype + " To BLOOD DONOR - MOBILE APP",Toast.LENGTH_LONG).show();
+                unitsize =unit.getText().toString();
+                if(Integer.parseInt(unitsize) > 0 && !bloodtype.equals("Blood Type")){
+                    if(pd.isShowing()){
+                        pd.cancel();
+                        pd.hide();
+                    }
+                    pd.show();
+                    volleyUpdateBankRequest(dbColumnList.serveraddress);
+                }
+            }
+        });
+
+
+
+
+        final Dialog d = new Dialog(HomeScreen.this);
+        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        d.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        d.setCanceledOnTouchOutside(true);
+        d.setContentView(snackView);
+        d.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation_2;
+        d.show();
+    }
+
+    public void volleyUpdateBankRequest(String url){
+        String  REQUEST_TAG = "com.volley.volleyJsonArrayRequest";
+        StringRequest UpdateBankRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        if(pd.isShowing()){
+                            pd.cancel();
+                            pd.hide();
+                        }
+                        if (response.equals("Updated")){
+                            displayMessage("Blood Bank Updated!!");
+                        }else{
+                            displayMessage("Error: Fail To Update Blood Bank \nPlease Retry!!" +response);
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if(pd.isShowing()){
+                            pd.cancel();
+                            pd.hide();
+                        }
+                        displayMessage("Error: Fail To Update Blood Bank \nPlease Retry!!"+error);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("opr", "UpdateBankRequest");
+                params.put("phone", loginPhone);
+                params.put("unit", unitsize);
+                params.put("bloodtype", bloodtype);
+                return params;
+            }
+        };
+
+        UpdateBankRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                2,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(UpdateBankRequest, REQUEST_TAG);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        bloodtype = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+
+
+    public void displayDeleteAccountMsg(){
+        String msg="Confirmation: Are You Sure You Want To Delete Your Account? " + System.getProperty("line.separator")+
+                "This Process Will Delete Every Of Your Activity On This Platform." + System.getProperty("line.separator")
+                + "Please Confirm !";
+        builder = new AlertDialog.Builder(this);
+        builder.setMessage(msg);
+        builder.setTitle(R.string.app_name);
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+//                loadlocalData();
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
+        alert.show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
