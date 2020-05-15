@@ -31,7 +31,9 @@ public class LoginOption extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_option);
         init();
-
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setElevation(0);
+        }
         login = findViewById(R.id.login);
         donor = findViewById(R.id.donor);
         hospital = findViewById(R.id.hospital);

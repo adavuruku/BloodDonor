@@ -42,13 +42,17 @@ public class HomeScreen extends AppCompatActivity {
     Handler mHandler;
     ProgressDialog pd;
     AlertDialog.Builder builder;
-    LinearLayout myprofile;
+    LinearLayout myprofile,updateprofile,createrequest,about;
     int alldone = 0;
+    String userType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setElevation(0);
+        }
         dbHelper = new dbHelper(getApplicationContext());
         LoginUserPhone = this.getSharedPreferences("LoginUserPhone", this.MODE_PRIVATE);
         loginPhone = LoginUserPhone.getString("LoginUserPhone", "");
@@ -377,10 +381,53 @@ class  ProcessDonors extends AsyncTask<String, Integer, String> {
 //all menu click
     public void initComponents(){
         myprofile = findViewById(R.id.myprofile);
+        updateprofile = findViewById(R.id.updateprofile);
         myprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showProfile();
+            }
+        });
+
+        updateprofile = findViewById(R.id.updateprofile);
+        updateprofile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Cursor cur =dbHelper.getAUser(loginPhone);
+                if(cur.getCount()>0){
+                    cur.moveToFirst();
+                    userType = cur.getString(cur.getColumnIndex(dbColumnList.usersRecord.COLUMN_USERTYPE));
+                }
+                if(userType.equals("Donor")){
+                    Intent intent = new Intent(getApplication(), updateProfile.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                }else{
+                    Intent intent = new Intent(getApplication(), updateHospital.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                }
+
+            }
+        });
+
+        createrequest = findViewById(R.id.createrequest);
+        createrequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplication(), createRequest.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            }
+        });
+
+        about = findViewById(R.id.about);
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplication(), about.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
     }

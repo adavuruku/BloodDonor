@@ -58,7 +58,7 @@ public class dbHelper extends SQLiteOpenHelper {
                 dbColumnList.usersRequest.COLUMN_UNIT + " INTEGER " +
                 ")";
 
-        String CREATE_TABLE_HOSPITALBANKBLOOD= "CREATE TABLE IF NOT EXISTS " + dbColumnList.hospitalBankBlood.TABLE_NAME +
+        String CREATE_TABLE_HOSPITALBANKBLOOD = "CREATE TABLE IF NOT EXISTS " + dbColumnList.hospitalBankBlood.TABLE_NAME +
                 "(" +
                 dbColumnList.hospitalBankBlood._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
                 dbColumnList.hospitalBankBlood.COLUMN_PHONE + " VARCHAR, " +
@@ -151,6 +151,14 @@ public class dbHelper extends SQLiteOpenHelper {
                 null,null );
     }
 
+    public void UpdateUser(String prevphone, String newphone){
+        SQLiteDatabase database = getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(dbColumnList.usersRecord.COLUMN_PHONE, newphone);
+        database.update(dbColumnList.usersRecord.TABLE_NAME, cv, dbColumnList.usersRecord.COLUMN_PHONE + "= ?", new String[]{prevphone});
+    }
+
+
 //    //delete all company
 //    public void deleteCompany(){
 //        SQLiteDatabase database = getWritableDatabase();
@@ -222,6 +230,12 @@ public class dbHelper extends SQLiteOpenHelper {
                 null,null);
     }
 
+    public void UpdateUserRequest(String prevphone, String newphone){
+        SQLiteDatabase database = getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(dbColumnList.usersRequest.COLUMN_PHONE, newphone);
+        database.update(dbColumnList.usersRequest.TABLE_NAME, cv, dbColumnList.usersRequest.COLUMN_PHONE + "= ?", new String[]{prevphone});
+    }
 
     public Cursor verifyBloodBankExist(String recordid){
         SQLiteDatabase database = getReadableDatabase();

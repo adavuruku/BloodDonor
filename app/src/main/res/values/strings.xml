@@ -23,6 +23,7 @@
     <string name="calculate">Eligibility Test</string>
     <string name="updatebank">Update Bank</string>
     <string name="load">Loading...</string>
+    <string name="createrequest">Create Blood Request</string>
     <string-array name="statesList">
         <item>State</item>
         <item>Abuja</item>
