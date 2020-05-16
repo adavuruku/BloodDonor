@@ -56,4 +56,102 @@ public class myModels {
             return address;
         }
     }
+
+    public class Hospitals {
+        private String fullname;
+        private String phone;
+        private String email;
+        private String type;
+        int ap,an,bp,bn,op,on,abp,abn;
+        private String state;
+        private String localGovt;
+        private String address;
+        private String messageBlood;
+
+        public Hospitals(String fullname, String phone, String email,
+                         String type,String state,String localGovt, String address, int ap, int an, int bp, int bn,
+                         int op, int on, int abp, int abn,String messageBlood
+                         ) {
+            this.fullname = fullname;
+            this.phone = phone;
+            this.email = email;
+            this.type = type;
+            this.ap = ap;
+            this.an = an;
+            this.bp = bp;
+            this.bn = bn;
+            this.op = op;
+            this.on = on;
+            this.abp = abp;
+            this.abn = abn;
+            this.state = state;
+            this.localGovt = localGovt;
+            this.address = address;
+            this.messageBlood = messageBlood;
+        }
+
+        public String getFullname() {
+            return fullname;
+        }
+
+        public String getMessageBlood() {
+            return messageBlood;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public int getAp() {
+            return ap;
+        }
+
+        public int getAn() {
+            return an;
+        }
+
+        public int getBp() {
+            return bp;
+        }
+
+        public int getBn() {
+            return bn;
+        }
+
+        public int getOp() {
+            return op;
+        }
+
+        public int getOn() {
+            return on;
+        }
+
+        public int getAbp() {
+            return abp;
+        }
+
+        public int getAbn() {
+            return abn;
+        }
+
+        public String getState() {
+            return state;
+        }
+
+        public String getLocalGovt() {
+            return localGovt;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+    }
 }

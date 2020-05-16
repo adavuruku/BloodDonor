@@ -3,7 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:layout_marginBottom="5dp"
+    android:background="@drawable/buttonshapetwo">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,22 +22,26 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/by"
                 android:padding="5dp"
+                android:textColor="@color/colorBlack"
                 android:textStyle="bold"
                 android:text="Abdulraheem Sherif Adavuruku"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
+                android:textStyle="bold"
                 android:text="aabdulraheemsherif@gmail.com/08164377187"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
+                android:textStyle="bold"
                 android:text="Kogi State / Lokoja"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
+                android:textStyle="bold"
                 android:minLines="2"
                 android:text="Duro Soleye Clinic, National Ajaokuta."/>
         </LinearLayout>
@@ -75,8 +81,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/calcresult">
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,23 +91,27 @@
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
+                android:background="@drawable/calcresult"
                 android:src="@drawable/aplus"
                 android:id="@+id/ap"/>
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:background="@drawable/calcresult"
                 android:layout_weight="1"
                 android:src="@drawable/aminus"
                 android:id="@+id/an"/>
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:background="@drawable/calcresult"
                 android:layout_weight="1"
                 android:src="@drawable/bplus"
                 android:id="@+id/bp"/>
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:background="@drawable/calcresult"
                 android:layout_weight="1"
                 android:src="@drawable/bminus"
                 android:id="@+id/bn"/>
@@ -110,28 +119,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/calcresult"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
+                android:background="@drawable/calcresult"
                 android:src="@drawable/abp"
                 android:id="@+id/abp"/>
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:background="@drawable/calcresult"
                 android:layout_weight="1"
                 android:src="@drawable/abminus"
                 android:id="@+id/abn"/>
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:background="@drawable/calcresult"
                 android:layout_weight="1"
                 android:src="@drawable/oplus"
                 android:id="@+id/op"/>
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:background="@drawable/calcresult"
                 android:layout_weight="1"
                 android:src="@drawable/ominus"
                 android:id="@+id/on"/>

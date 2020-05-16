@@ -256,12 +256,12 @@ public class dbHelper extends SQLiteOpenHelper {
             database.insert(dbColumnList.hospitalBankBlood.TABLE_NAME,null,cv);
         }
     }
-    public Cursor getACompanyBank(String phone){
+    public Cursor getABloodTypeCount(String phone,String bloodtype){
         SQLiteDatabase database = getReadableDatabase();
         return database.query(dbColumnList.hospitalBankBlood.TABLE_NAME,
                 null,
-                dbColumnList.hospitalBankBlood.COLUMN_PHONE +" = ? Limit 1",
-                new String[]{phone},
+                dbColumnList.hospitalBankBlood.COLUMN_PHONE +" = ? AND "+dbColumnList.hospitalBankBlood.COLUMN_BLOODTYPE +" =? Limit 1",
+                new String[]{phone,bloodtype},
                 null,
                 null,null);
     }
