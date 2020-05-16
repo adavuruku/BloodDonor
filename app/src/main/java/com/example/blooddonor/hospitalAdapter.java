@@ -70,8 +70,8 @@ public class hospitalAdapter extends RecyclerView.Adapter<hospitalAdapter.Recycl
             if(contact.getAbp() <= 0){
                 holder.abp.setVisibility(View.GONE);
             }
-            if(contact.getOp() <= 0){
-                holder.op.setVisibility(View.GONE);
+            if(contact.getOn() <= 0){
+                holder.on.setVisibility(View.GONE);
             }
             if(contact.getOp() <= 0){
                 holder.op.setVisibility(View.GONE);

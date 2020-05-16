@@ -350,7 +350,7 @@ public class ListHospitals extends AppCompatActivity implements  SearchView.OnQu
         return message;
     }
     public void loadData(){
-        System.out.println(contentData);
+        System.out.println(contentData.get(0).getFullname());
         newRecord = contentData;
         hospitalAdapter = new hospitalAdapter( newRecord, getApplicationContext(), new hospitalAdapter.OnItemClickListener() {
             @Override
