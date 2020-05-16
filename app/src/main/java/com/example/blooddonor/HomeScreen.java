@@ -56,7 +56,7 @@ public class HomeScreen extends AppCompatActivity implements AdapterView.OnItemS
     DatePickerDialog.OnDateSetListener setListener;
     int year, month, day;
     LinearLayout myprofile,updateprofile,createrequest,about,calculate,updatebank,
-    delete;
+    delete, donors;
     int alldone = 0;
     String userType;
     @Override
@@ -424,8 +424,16 @@ class  ProcessDonors extends AsyncTask<String, Integer, String> {
 
 //all menu click
     public void initComponents(){
+        Cursor cur =dbHelper.getAUser(loginPhone);
+        if(cur.getCount()>0){
+            cur.moveToFirst();
+            userType = cur.getString(cur.getColumnIndex(dbColumnList.usersRecord.COLUMN_USERTYPE));
+        }
+
+
+
+
         myprofile = findViewById(R.id.myprofile);
-        updateprofile = findViewById(R.id.updateprofile);
         myprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -437,11 +445,7 @@ class  ProcessDonors extends AsyncTask<String, Integer, String> {
         updateprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cursor cur =dbHelper.getAUser(loginPhone);
-                if(cur.getCount()>0){
-                    cur.moveToFirst();
-                    userType = cur.getString(cur.getColumnIndex(dbColumnList.usersRecord.COLUMN_USERTYPE));
-                }
+
                 if(userType.equals("Donor")){
                     Intent intent = new Intent(getApplication(), updateProfile.class);
                     startActivity(intent);
@@ -465,11 +469,23 @@ class  ProcessDonors extends AsyncTask<String, Integer, String> {
             }
         });
 
+
         about = findViewById(R.id.about);
         about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplication(), about.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            }
+        });
+
+
+        donors = findViewById(R.id.donors);
+        donors.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplication(), ListDonors.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
@@ -490,7 +506,10 @@ class  ProcessDonors extends AsyncTask<String, Integer, String> {
                 showBankUpdate();
             }
         });
-
+        if(userType.equals("Donor")){
+            updatebank.setVisibility(View.INVISIBLE);
+            updatebank.setVisibility(View.GONE);
+        }
 
         delete = findViewById(R.id.delete);
         delete.setOnClickListener(new View.OnClickListener() {
@@ -663,7 +682,7 @@ class  ProcessDonors extends AsyncTask<String, Integer, String> {
                         if (response.equals("Updated")){
                             displayMessage("Blood Bank Updated!!");
                         }else{
-                            displayMessage("Error: Fail To Update Blood Bank \nPlease Retry!!" +response);
+                            displayMessage("Error: Fail To Update Blood Bank \nPlease Retry!!");
                         }
                     }
                 },
@@ -675,7 +694,7 @@ class  ProcessDonors extends AsyncTask<String, Integer, String> {
                             pd.cancel();
                             pd.hide();
                         }
-                        displayMessage("Error: Fail To Update Blood Bank \nPlease Retry!!"+error);
+                        displayMessage("Error: Fail To Update Blood Bank \nPlease Retry!!");
                     }
                 }
         ) {
@@ -723,7 +742,12 @@ class  ProcessDonors extends AsyncTask<String, Integer, String> {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-//                loadlocalData();
+                if(pd.isShowing()){
+                    pd.cancel();
+                    pd.hide();
+                }
+                pd.show();
+                volleyDeleteAccountRequest(dbColumnList.serveraddress);
             }
         });
 
@@ -738,6 +762,65 @@ class  ProcessDonors extends AsyncTask<String, Integer, String> {
         alert.show();
     }
 
+    public void volleyDeleteAccountRequest(String url){
+        String  REQUEST_TAG = "com.volley.volleyJsonArrayRequest";
+        StringRequest DeleteAccountRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        if(pd.isShowing()){
+                            pd.cancel();
+                            pd.hide();
+                        }
+                        if (response.equals("Deleted")){
+                            deleteLocalAccount();
+                            displayMessage("Account Deleted And All Records Remove!!");
+                        }else{
+                            displayMessage("Error: Fail To Delete Account \nPlease Retry!!");
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if(pd.isShowing()){
+                            pd.cancel();
+                            pd.hide();
+                        }
+                        displayMessage("Error: Fail To Delete Account \nPlease Retry!!");
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("opr", "DeleteAccountRequest");
+                params.put("phone", loginPhone);
+                return params;
+            }
+        };
+
+        DeleteAccountRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                2,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(DeleteAccountRequest, REQUEST_TAG);
+    }
+
+    public void deleteLocalAccount(){
+        SharedPreferences.Editor editor;
+        editor = LoginUserPhone.edit();
+        editor.putString("LoginUserPhone", "");
+        editor.apply();
+        Intent intent = new Intent(getApplicationContext(), LoginOption.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        finish();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.homemenu, menu);
@@ -747,17 +830,9 @@ class  ProcessDonors extends AsyncTask<String, Integer, String> {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Intent intent;
         switch (id){
             case R.id.close:
-                SharedPreferences.Editor editor;
-                editor = LoginUserPhone.edit();
-                editor.putString("LoginUserPhone", "");
-                editor.apply();
-                intent = new Intent(getApplicationContext(), LoginOption.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                finish();
+                deleteLocalAccount();
         }
         return super.onOptionsItemSelected(item);
     }
