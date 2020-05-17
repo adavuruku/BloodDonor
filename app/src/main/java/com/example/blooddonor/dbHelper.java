@@ -220,12 +220,11 @@ public class dbHelper extends SQLiteOpenHelper {
     //view all active request
     public Cursor getAllRequest(){
         SQLiteDatabase database = getReadableDatabase();
-        return database.query(dbColumnList.usersRequest.TABLE_NAME,
-                null,
-                dbColumnList.usersRequest.COLUMN_REQUESTSTATUS +" = ? ",
-                new String[]{"0"},
-                null,
-                null,dbColumnList.usersRequest.COLUMN_REQUESTID + " desc ");
+
+        String sql = "SELECT * FROM "+dbColumnList.usersRequest.TABLE_NAME + " WHERE "
+                +dbColumnList.usersRequest.COLUMN_REQUESTSTATUS +" = 0 ORDER BY "
+                +dbColumnList.usersRequest._ID +" DESC ";
+        return database.rawQuery(sql, null);
     }
     //active 0 cleared 1 deleted 2 - List of your request only display active
     //request
@@ -235,7 +234,7 @@ public class dbHelper extends SQLiteOpenHelper {
         String sql = "SELECT * FROM "+dbColumnList.usersRequest.TABLE_NAME + " WHERE "
                 +dbColumnList.usersRequest.COLUMN_REQUESTSTATUS +" = 0  AND "
                 +dbColumnList.usersRequest.COLUMN_PHONE +" = '"+ phone +"' ORDER BY "
-                +dbColumnList.usersRequest.COLUMN_REQUESTID +" DESC ";
+                +dbColumnList.usersRequest._ID +" DESC ";
         return database.rawQuery(sql, null);
     }
 
@@ -246,7 +245,7 @@ public class dbHelper extends SQLiteOpenHelper {
         String sql = "SELECT * FROM "+dbColumnList.usersRequest.TABLE_NAME + " WHERE "
                 +dbColumnList.usersRequest.COLUMN_REQUESTSTATUS +" = 0  AND "
                 +dbColumnList.usersRequest.COLUMN_REQUESTTYPE +" = 0 ORDER BY "
-                +dbColumnList.usersRequest.COLUMN_REQUESTID +" DESC ";
+                +dbColumnList.usersRequest._ID +" DESC ";
         return database.rawQuery(sql, null);
 
     }
