@@ -154,4 +154,82 @@ public class myModels {
             return address;
         }
     }
+
+    public class Request {
+        private String requestID;
+        private String requestAuthor;
+        private String dateReg;
+        private String state;
+        private String email;
+        private String localGovt;
+        private String address;
+        private String type;
+        private Boolean mytype;
+        private String phone;
+        private String bloodtype;
+        private String unit;
+
+        public Request(String requestID, String requestAuthor, String dateReg, String state,
+                       String email, String localGovt, String address,
+                       String type,Boolean mytype,String phone, String bloodtype,String unit) {
+            this.requestID = requestID;
+            this.requestAuthor = requestAuthor;
+            this.dateReg = dateReg;
+            this.phone = phone;
+            this.state = state;
+            this.unit = unit;
+            this.email = email;
+            this.localGovt = localGovt;
+            this.address = address;
+            this.type = type;
+            this.mytype = mytype;
+            this.bloodtype = bloodtype;
+        }
+
+        public Boolean getMytype() {
+            return mytype;
+        }
+
+        public String getUnit() {
+            return unit;
+        }
+        public String getPhone() {
+            return phone;
+        }
+
+        public String getRequestAuthor() {
+            return requestAuthor;
+        }
+        public String getRequestID() {
+            return requestID;
+        }
+
+        public String getDateReg() {
+            return dateReg;
+        }
+
+        public String getState() {
+            return state;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getLocalGovt() {
+            return localGovt;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public String getBloodtype() {
+            return bloodtype;
+        }
+    }
 }

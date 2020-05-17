@@ -206,7 +206,8 @@ public class dbHelper extends SQLiteOpenHelper {
                 null,null);
     }
 
-    public Cursor getAllRequest(){
+    //statistic will count both active and closed
+    public Cursor getAllRequestStatistic(){
         SQLiteDatabase database = getReadableDatabase();
         return database.query(dbColumnList.usersRequest.TABLE_NAME,
                 null,
@@ -214,10 +215,44 @@ public class dbHelper extends SQLiteOpenHelper {
                         dbColumnList.usersRequest.COLUMN_REQUESTSTATUS +" = ?",
                 new String[]{"0","1"},
                 null,
-                null,null);
+                null,dbColumnList.usersRequest.COLUMN_REQUESTID + " desc ");
+    }
+    //view all active request
+    public Cursor getAllRequest(){
+        SQLiteDatabase database = getReadableDatabase();
+        return database.query(dbColumnList.usersRequest.TABLE_NAME,
+                null,
+                dbColumnList.usersRequest.COLUMN_REQUESTSTATUS +" = ? ",
+                new String[]{"0"},
+                null,
+                null,dbColumnList.usersRequest.COLUMN_REQUESTID + " desc ");
+    }
+    //active 0 cleared 1 deleted 2 - List of your request only display active
+    //request
+    public Cursor getAllMyRequest(String phone){
+        SQLiteDatabase database = getReadableDatabase();
+
+        String sql = "SELECT * FROM "+dbColumnList.usersRequest.TABLE_NAME + " WHERE "
+                +dbColumnList.usersRequest.COLUMN_REQUESTSTATUS +" = 0  AND "
+                +dbColumnList.usersRequest.COLUMN_PHONE +" = '"+ phone +"' ORDER BY "
+                +dbColumnList.usersRequest.COLUMN_REQUESTID +" DESC ";
+        return database.rawQuery(sql, null);
     }
 
-    //active 0 cleared 1 deleted 2
+    //emergency - 0 others - 1 - all active emmergency request
+    public Cursor getAllEmergencyRequest(){
+        SQLiteDatabase database = getReadableDatabase();
+
+        String sql = "SELECT * FROM "+dbColumnList.usersRequest.TABLE_NAME + " WHERE "
+                +dbColumnList.usersRequest.COLUMN_REQUESTSTATUS +" = 0  AND "
+                +dbColumnList.usersRequest.COLUMN_REQUESTTYPE +" = 0 ORDER BY "
+                +dbColumnList.usersRequest.COLUMN_REQUESTID +" DESC ";
+        return database.rawQuery(sql, null);
+
+    }
+
+    //active 0 cleared 1 deleted 2 - statistic still count all your closed and active
+    //request
     public Cursor getAUserRequest(String phone){
         SQLiteDatabase database = getReadableDatabase();
         return database.query(dbColumnList.usersRequest.TABLE_NAME,
@@ -235,6 +270,20 @@ public class dbHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(dbColumnList.usersRequest.COLUMN_PHONE, newphone);
         database.update(dbColumnList.usersRequest.TABLE_NAME, cv, dbColumnList.usersRequest.COLUMN_PHONE + "= ?", new String[]{prevphone});
+    }
+
+    public void DeleteUserRequest(String requestid){
+        SQLiteDatabase database = getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(dbColumnList.usersRequest.COLUMN_REQUESTSTATUS, "2");
+        database.update(dbColumnList.usersRequest.TABLE_NAME, cv, dbColumnList.usersRequest.COLUMN_REQUESTID + "= ?", new String[]{requestid});
+    }
+
+    public void CancelledUserRequest(String requestid){
+        SQLiteDatabase database = getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(dbColumnList.usersRequest.COLUMN_REQUESTSTATUS, "1");
+        database.update(dbColumnList.usersRequest.TABLE_NAME, cv, dbColumnList.usersRequest.COLUMN_REQUESTID + "= ?", new String[]{requestid});
     }
 
     public Cursor verifyBloodBankExist(String recordid){

@@ -3,13 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:layout_marginBottom="20dp"
+    android:background="@drawable/buttonshapetwo">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/by"
         android:padding="5dp"
         android:textStyle="bold"
+        android:textColor="@color/colorBlack"
         android:text="Created By: Abdulraheem Sherif Adavuruku"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,6 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:padding="5dp"
+            android:id="@+id/bloodtype"
             android:src="@drawable/abminus"
             android:layout_weight="1"/>
         <LinearLayout
@@ -30,18 +34,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
+                android:id="@+id/phone"
+                android:textStyle="bold"
                 android:text="08164377187"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
+                android:textStyle="bold"
+                android:id="@+id/state"
                 android:text="Kogi State / Lokoja"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
+                android:textStyle="bold"
+                android:id="@+id/dateRecord"
+                android:text="27-01-2019 15:12:23"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:minLines="2"
+                android:textStyle="bold"
+                android:id="@+id/contactAddress"
                 android:text="Duro Soleye Clinic, National Ajaokuta."/>
+
         </LinearLayout>
     </LinearLayout>
 
@@ -73,6 +91,18 @@
             android:layout_weight="1"
             android:src="@drawable/ic_share"
             android:id="@+id/share"/>
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_clear"
+            android:id="@+id/cancel"/>
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_delete_sweep"
+            android:id="@+id/delete"/>
     </LinearLayout>
 
 </LinearLayout>

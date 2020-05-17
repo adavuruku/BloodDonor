@@ -1,5 +1,6 @@
 package com.example.blooddonor;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -8,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -35,29 +38,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ListHospitals extends AppCompatActivity implements  SearchView.OnQueryTextListener {
+public class RequestWindow extends AppCompatActivity implements  SearchView.OnQueryTextListener {
     SwipeRefreshLayout mSwipeRefreshLayout;
-    List<myModels.Hospitals> contentData, newRecord;
+    List<myModels.Request> contentData, newRecord;
     RecyclerView recyclerView;
-
-    String allusers, allbloodbank, userTypeSelect;
-    private hospitalAdapter hospitalAdapter;
+    Boolean myRequest;
+    private SharedPreferences LoginUserPhone;
+    String loginPhone;
+    String allusers, alldonors, userTypeSelect;
+    private requestAdapter requestAdapter;
     dbHelper dbHelper;
     SearchView search;
+    ProgressDialog pd;
+    AlertDialog.Builder builder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_hospitals);
+        setContentView(R.layout.activity_request_window);
 
 
         userTypeSelect = getIntent().getStringExtra("userType");
+        String titlePage = userTypeSelect.equals("myRequest")? "List Of All Your Active Blood Request":userTypeSelect.equals("emergency")? "List Of All Active Emergency Blood Request":"List Of All Active Blood Request";
 
-        String titlePage = userTypeSelect.equals("Hospital")? "List Of All Hospitals":"List Of All Blood Banks";
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setElevation(0);
             getSupportActionBar().setTitle(titlePage);
         }
+
+        LoginUserPhone = this.getSharedPreferences("LoginUserPhone", this.MODE_PRIVATE);
+        loginPhone = LoginUserPhone.getString("LoginUserPhone", "");
 
         dbHelper = new dbHelper(getApplicationContext());
         contentData = new ArrayList<>();
@@ -79,7 +89,7 @@ public class ListHospitals extends AppCompatActivity implements  SearchView.OnQu
             @Override
             public void onRefresh() {
                 volleyAllUsers(dbColumnList.serveraddress);
-                volleyBankBlood(dbColumnList.serveraddress);
+                volleyAllRequest(dbColumnList.serveraddress);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -91,9 +101,35 @@ public class ListHospitals extends AppCompatActivity implements  SearchView.OnQu
             }
         },1000);
 
+        pd = new ProgressDialog(this);
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pd.setMessage("Processing Request ...");
+        pd.setTitle(R.string.app_name);
+        pd.setIcon(R.mipmap.ic_launcher);
+        pd.setIndeterminate(true);
+        pd.setCancelable(false);
     }
 
-
+    public void displayMessage(String msg) {
+        if(pd.isShowing()){
+            pd.hide();
+            pd.cancel();
+        }
+        builder = new AlertDialog.Builder(this);
+        builder.setMessage(msg);
+        builder.setTitle(R.string.app_name);
+        builder.setIcon(R.mipmap.ic_launcher_round);
+        builder.setCancelable(false);
+        builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
+        alert.show();
+    }
     public void volleyAllUsers(String url){
         String  REQUEST_TAG = "com.volley.volleyJsonArrayRequest";
         StringRequest AllUsersRequest = new StringRequest(Request.Method.POST, url,
@@ -121,8 +157,7 @@ public class ListHospitals extends AppCompatActivity implements  SearchView.OnQu
             protected Map<String, String> getParams()
             {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("opr", "loaddonorusers");
-                params.put("type", userTypeSelect);
+                params.put("opr", "loadusers");
                 return params;
             }
         };
@@ -171,16 +206,16 @@ public class ListHospitals extends AppCompatActivity implements  SearchView.OnQu
         }
     }
 
-    public void volleyBankBlood(String url){
+    public void volleyAllRequest(String url){
         String  REQUEST_TAG = "com.volley.volleyJsonArrayRequest";
-        StringRequest AllBloodBankRequest = new StringRequest(Request.Method.POST, url,
+        StringRequest AllDonoRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response) {
                         if (response.length()>2){
-                            allbloodbank = response;
-                            new ProcessBloodBank().execute();
+                            alldonors = response;
+                            new ProcessDonors().execute();
                         }else{
                             new LoadLocalData().execute();
                         }
@@ -198,29 +233,32 @@ public class ListHospitals extends AppCompatActivity implements  SearchView.OnQu
             protected Map<String, String> getParams()
             {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("opr", "loadbloodbank");
+                params.put("opr", "loadrequest");
                 return params;
             }
         };
 
-        AllBloodBankRequest.setRetryPolicy(new DefaultRetryPolicy(
+        AllDonoRequest.setRetryPolicy(new DefaultRetryPolicy(
                 3000,
                 2,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(AllBloodBankRequest, REQUEST_TAG);
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(AllDonoRequest, REQUEST_TAG);
     }
 
-    class ProcessBloodBank extends AsyncTask<String, Integer, String> {
+    class  ProcessDonors extends AsyncTask<String, Integer, String> {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                JSONArray jsonarray = new JSONArray(allbloodbank);
+                JSONArray jsonarray = new JSONArray(alldonors);
                 for (int i = 0; i < jsonarray.length(); i++) {
                     JSONObject jsonobject = jsonarray.getJSONObject(i);
-                    dbHelper.saveBloodBank(
-                            jsonobject.getString("id"), jsonobject.getString("bloodtype"),
-                            jsonobject.getString("phone"), jsonobject.getString("qty")
+                    dbHelper.saveRequestInformation(
+                            jsonobject.getString("bloodtype"), jsonobject.getString("id"),
+                            jsonobject.getString("state"), jsonobject.getString("localgovt"),
+                            jsonobject.getString("phone"), jsonobject.getString("unit"),
+                            jsonobject.getString("requesttype"), jsonobject.getString("address"),
+                            jsonobject.getString("recorddate"), jsonobject.getString("requeststatus")
                     );
                 }
 
@@ -244,86 +282,45 @@ public class ListHospitals extends AppCompatActivity implements  SearchView.OnQu
 
             try {
                 contentData.clear();
-                Cursor allnews = dbHelper.getAllGroup(userTypeSelect);
+                Cursor allnews=null;
+                myRequest = false;
+                if(userTypeSelect.equals("myRequest")){
+                    allnews = dbHelper.getAllMyRequest(loginPhone);
+                    myRequest = true;
+                }else if(userTypeSelect.equals("emergency")){
+                    allnews = dbHelper.getAllEmergencyRequest();
+                }else{
+                    allnews = dbHelper.getAllRequest();
+                }
                 if (allnews.getCount() > 0) {
                     while (allnews.moveToNext()) {
+//                        String requestAuthor, String dateReg, String state,
+//                                String email, String localGovt, String address,
+//                                String type,Boolean mytype,String phone, String bloodtype
 
                         String userPhone = allnews.getString(allnews.getColumnIndex(dbColumnList.usersRecord.COLUMN_PHONE));
-                        int ap=0,an=0,bp=0,bn=0,abp=0,abn=0,op=0,on=0;
-
-                        String messageBlood = "";
-                        Cursor apc = dbHelper.getABloodTypeCount(userPhone, "A+");
-                        if(apc.getCount()>0){
-                            apc.moveToFirst();
-                            ap = Integer.parseInt(apc.getString(apc.getColumnIndex(dbColumnList.hospitalBankBlood.COLUMN_QUANTITY)));
-                            messageBlood.concat(ap >0 ? "A+":"");
+                        String requestAuthor=null, emailAdd =null;
+                        Cursor reqAuthor = dbHelper.getAUser(userPhone);
+                        if(reqAuthor.getCount()>0){
+                            reqAuthor.moveToFirst();
+                            requestAuthor = reqAuthor.getString(reqAuthor.getColumnIndex(dbColumnList.usersRecord.COLUMN_FULLNAME));
+                            emailAdd = reqAuthor.getString(reqAuthor.getColumnIndex(dbColumnList.usersRecord.COLUMN_EMAIL));
                         }
-                        apc.close();
+                        reqAuthor.close();
 
-                        Cursor anc = dbHelper.getABloodTypeCount(userPhone, "A-");
-                        if(anc.getCount()>0){
-                            anc.moveToFirst();
-                            an = Integer.parseInt(anc.getString(anc.getColumnIndex(dbColumnList.hospitalBankBlood.COLUMN_QUANTITY)));
-                            messageBlood.concat(an >0 ? "A-":"");
-                        }
-                        anc.close();
-
-                        Cursor bnc = dbHelper.getABloodTypeCount(userPhone, "B-");
-                        if(bnc.getCount()>0){
-                            bnc.moveToFirst();
-                            bn = Integer.parseInt(bnc.getString(bnc.getColumnIndex(dbColumnList.hospitalBankBlood.COLUMN_QUANTITY)));
-                            messageBlood.concat(bn >0 ? "B-":"");
-                        }
-                        bnc.close();
-
-                        Cursor bpc = dbHelper.getABloodTypeCount(userPhone, "B+");
-                        if(bpc.getCount()>0){
-                            bpc.moveToFirst();
-                            bp = Integer.parseInt(bpc.getString(bpc.getColumnIndex(dbColumnList.hospitalBankBlood.COLUMN_QUANTITY)));
-                            messageBlood.concat(bp >0 ? "B+":"");
-                        }
-                        bpc.close();
-
-                        Cursor abpc = dbHelper.getABloodTypeCount(userPhone, "AB+");
-                        if(abpc.getCount()>0){
-                            abpc.moveToFirst();
-                            abp = Integer.parseInt(abpc.getString(abpc.getColumnIndex(dbColumnList.hospitalBankBlood.COLUMN_QUANTITY)));
-                            messageBlood.concat(abp >0 ? "AB+":"");
-                        }
-                        abpc.close();
-
-                        Cursor abnc = dbHelper.getABloodTypeCount(userPhone, "AB-");
-                        if(abnc.getCount()>0){
-                            abnc.moveToFirst();
-                            abn = Integer.parseInt(abnc.getString(abnc.getColumnIndex(dbColumnList.hospitalBankBlood.COLUMN_QUANTITY)));
-                            messageBlood.concat(abn >0 ? "AB-":"");
-                        }
-                        abnc.close();
-
-                        Cursor onc = dbHelper.getABloodTypeCount(userPhone, "O-");
-                        if(onc.getCount()>0){
-                            onc.moveToFirst();
-                            on = Integer.parseInt(onc.getString(onc.getColumnIndex(dbColumnList.hospitalBankBlood.COLUMN_QUANTITY)));
-                            messageBlood.concat(on >0 ? "O-":"");
-                        }
-                        onc.close();
-
-                        Cursor opc = dbHelper.getABloodTypeCount(userPhone, "O+");
-                        if(opc.getCount()>0){
-                            opc.moveToFirst();
-                            op = Integer.parseInt(opc.getString(opc.getColumnIndex(dbColumnList.hospitalBankBlood.COLUMN_QUANTITY)));
-                            messageBlood.concat(op >0 ? "O+":"");
-                        }
-                        opc.close();
-                        myModels.Hospitals noticeList = new myModels().new Hospitals(
-                                allnews.getString(allnews.getColumnIndex(dbColumnList.usersRecord.COLUMN_FULLNAME)),
-                                allnews.getString(allnews.getColumnIndex(dbColumnList.usersRecord.COLUMN_PHONE)),
-                                allnews.getString(allnews.getColumnIndex(dbColumnList.usersRecord.COLUMN_EMAIL)),
-                                allnews.getString(allnews.getColumnIndex(dbColumnList.usersRecord.COLUMN_USERTYPE)),
-                                allnews.getString(allnews.getColumnIndex(dbColumnList.usersRecord.COLUMN_STATE)),
-                                allnews.getString(allnews.getColumnIndex(dbColumnList.usersRecord.COLUMN_LGOV)),
-                                allnews.getString(allnews.getColumnIndex(dbColumnList.usersRecord.COLUMN_CONTACTADD)),
-                                ap,an,bp,bn,op,on,abp,abn,messageBlood);
+                        myModels.Request noticeList = new myModels().new Request(
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.usersRequest.COLUMN_REQUESTID)),
+                                requestAuthor,
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.usersRequest.COLUMN_DATE)),
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.usersRequest.COLUMN_STATE)),
+                                emailAdd,
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.usersRequest.COLUMN_LOCALGOV)),
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.usersRequest.COLUMN_CONTACTADD)),
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.usersRequest.COLUMN_REQUESTTYPE)),
+                                myRequest,
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.usersRequest.COLUMN_PHONE)),
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.usersRequest.COLUMN_BLOODTYPE)),
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.usersRequest.COLUMN_UNIT)));
 
                         contentData.add(noticeList);
                     }
@@ -341,12 +338,11 @@ public class ListHospitals extends AppCompatActivity implements  SearchView.OnQu
     public String prepMessage(int position){
         String message =  "You can Contact the Information Bello\n" +
                 "To Get A Blood Transfusion.\n\n"+
-                "Name : " + newRecord.get(position).getFullname() +"\n" +
+                "Requested By : " + newRecord.get(position).getRequestAuthor() +"\n" +
                 "Phone : " + newRecord.get(position).getPhone() +"\n" +
                 "Email : " + newRecord.get(position).getEmail() +"\n" +
                 "State : " + newRecord.get(position).getState() +"\n" +
                 "Local Govt : " + newRecord.get(position).getLocalGovt() +"\n" +
-                "Type : " + newRecord.get(position).getType() +"\n" +
                 "Address : " + newRecord.get(position).getAddress() +"\n\n" +
                 "Blood Donor App.\n" +
                 "Design By: Omoniyi Foluke Temitope.";
@@ -354,16 +350,16 @@ public class ListHospitals extends AppCompatActivity implements  SearchView.OnQu
     }
     public void loadData(){
         newRecord = contentData;
-        hospitalAdapter = new hospitalAdapter( newRecord, getApplicationContext(), new hospitalAdapter.OnItemClickListener() {
+        requestAdapter = new requestAdapter( newRecord, getApplicationContext(), new requestAdapter.OnItemClickListener() {
             @Override
             public void onCallClick(View v, int position) {
                 String phoneNO =  newRecord.get(position).getPhone();
-                ActivityCompat.requestPermissions(ListHospitals.this,new String[]{Manifest.permission.CALL_PHONE},24027);
+                ActivityCompat.requestPermissions(RequestWindow.this,new String[]{Manifest.permission.CALL_PHONE},24027);
                 String phone_id = "tel:"+phoneNO;
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
                 callIntent.setData(Uri.parse(phone_id));
                 if (callIntent.resolveActivity(getPackageManager()) != null) {
-                    if (ActivityCompat.checkSelfPermission(ListHospitals.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(RequestWindow.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                         return;
                     }
                     startActivity(callIntent);
@@ -406,10 +402,113 @@ public class ListHospitals extends AppCompatActivity implements  SearchView.OnQu
                 sharingIntent.putExtra(Intent.EXTRA_TEXT,message );
                 startActivity(Intent.createChooser(sharingIntent,"Share Via"));
             }
+
+            @Override
+            public void onCancelClick(View v, int position) {
+                String requestid =  newRecord.get(position).getRequestID();
+                String msg="Once A Blood Request Is Closed No One On This Platform Can See / Attend To The Request."+System.getProperty("line.separator")+
+                        "This Process Will Close The Blood Request From The PlatForm." + System.getProperty("line.separator") +System.getProperty("line.separator") +
+                        "Confirmation: Are You Sure You Want To Close The Blood Request ? " + System.getProperty("line.separator")
+                        + "Please Confirm !";
+                displayDeleteRequestMsg("Close",requestid,msg);
+            }
+
+            @Override
+            public void onDeleteClick(View v, int position) {
+                String requestid =  newRecord.get(position).getRequestID();
+                String msg="This Process Will Delete This Blood Request From The PlatForm." + System.getProperty("line.separator")+System.getProperty("line.separator")+
+                "Confirmation: Are You Sure You Want To Delete The Blood Request ? " + System.getProperty("line.separator")
+                        + "Please Confirm !";
+                displayDeleteRequestMsg("Delete",requestid,msg);
+            }
         });
-        hospitalAdapter.notifyDataSetChanged();
-        recyclerView.setAdapter(hospitalAdapter);
+        requestAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(requestAdapter);
     }
+
+    public void displayDeleteRequestMsg(final String operation, final String requestid,
+                                        final String message){
+
+        builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setTitle(R.string.app_name);
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(pd.isShowing()){
+                    pd.cancel();
+                    pd.hide();
+                }
+                pd.show();
+                volleyDeleteRequest(dbColumnList.serveraddress,operation, requestid);
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
+        alert.show();
+    }
+
+    public void volleyDeleteRequest(String url, final String operation, final String requestid){
+        String  REQUEST_TAG = "com.volley.volleyJsonArrayRequest";
+        StringRequest AllDonoRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equals("Deleted")){
+                            dbHelper.DeleteUserRequest(requestid);
+                            displayMessage("Blood Request Successfully Deleted !!!");
+                            new LoadLocalData().execute();
+                        }else if (response.equals("Closed")){
+                            dbHelper.CancelledUserRequest(requestid);
+                            displayMessage("Blood Request Successfully Closed !!!");
+                            new LoadLocalData().execute();
+                        }else{
+                            displayMessage(operation.equals("Delete")? "Fail To Delete Blood Request\n Please Retry!!!" :
+                                    "Fail To Close Blood Request\n Please Retry!!!");
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if(operation.equals("Delete")){
+                            displayMessage("Fail To Delete Blood Request\n Please Retry!!!");
+                        }else{
+                            displayMessage("Fail To Close Blood Request\n Please Retry!!!");
+                        }
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("opr", operation);
+                params.put("requestid", requestid);
+                return params;
+            }
+        };
+
+        AllDonoRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                2,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(AllDonoRequest, REQUEST_TAG);
+    }
+
+
 
 
     @Override
@@ -421,13 +520,13 @@ public class ListHospitals extends AppCompatActivity implements  SearchView.OnQu
 
     @Override
     public boolean onQueryTextChange(String textData) {
-        ArrayList<myModels.Hospitals> newList = new ArrayList<>();
+        ArrayList<myModels.Request> newList = new ArrayList<>();
         newRecord = new ArrayList<>();
         String newText = textData.toLowerCase();
-        for(myModels.Hospitals cont : contentData){
+        for(myModels.Request cont : contentData){
             String name_ = cont.getState().toLowerCase();
             String depart_ = cont.getLocalGovt().toLowerCase();
-            String bloodtype_ = cont.getMessageBlood().toLowerCase();
+            String bloodtype_ = cont.getBloodtype().toLowerCase();
             if(name_.contains(newText) || depart_.contains(newText)
                     || bloodtype_.contains(newText)){
                 newList.add(cont);
@@ -439,11 +538,14 @@ public class ListHospitals extends AppCompatActivity implements  SearchView.OnQu
             newRecord = contentData;
         }
 
-        hospitalAdapter.setFilter(newList);
-        hospitalAdapter.notifyDataSetChanged();
-        recyclerView.setAdapter(hospitalAdapter);
+        requestAdapter.setFilter(newList);
+        requestAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(requestAdapter);
         return true;
     }
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

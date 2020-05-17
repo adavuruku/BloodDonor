@@ -149,7 +149,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="View All Blood Request"
+            android:text="View All Active Blood Request"
             android:textColor="@color/colorText"
             android:gravity="center"
             android:fontFamily="sans-serif-medium"/>

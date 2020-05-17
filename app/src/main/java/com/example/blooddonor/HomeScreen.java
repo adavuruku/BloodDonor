@@ -56,7 +56,7 @@ public class HomeScreen extends AppCompatActivity implements AdapterView.OnItemS
     DatePickerDialog.OnDateSetListener setListener;
     int year, month, day;
     LinearLayout myprofile,updateprofile,createrequest,about,calculate,updatebank,
-    delete, donors,bloodbank,hospital;
+    delete, donors,bloodbank,hospital,myrequest, emergency, allrequest;
     int alldone = 0;
     String userType;
     @Override
@@ -74,11 +74,7 @@ public class HomeScreen extends AppCompatActivity implements AdapterView.OnItemS
         mHandler = new Handler();
 
         initComponents();
-        /* TODO
-        *   1.create a cron job that loads all data from the three table
-        * 2.cron job to update UI
-        *
-        * */
+
         pd = new ProgressDialog(this);
         pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         pd.setMessage("Processing Request ...");
@@ -151,7 +147,7 @@ public class HomeScreen extends AppCompatActivity implements AdapterView.OnItemS
         nobank.setText(Integer.toString(count.getCount()));
         count.close();
 
-        count = dbHelper.getAllRequest();
+        count = dbHelper.getAllRequestStatistic();
         norequest.setText(Integer.toString( count.getCount()));
         count.close();
     }
@@ -514,7 +510,38 @@ class  ProcessDonors extends AsyncTask<String, Integer, String> {
             }
         });
 
+        allrequest = findViewById(R.id.allrequest);
+        allrequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplication(), RequestWindow.class);
+                intent.putExtra("userType", "All");
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            }
+        });
 
+        emergency = findViewById(R.id.emergency);
+        emergency.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplication(), RequestWindow.class);
+                intent.putExtra("userType", "emergency");
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            }
+        });
+
+        myrequest = findViewById(R.id.myrequest);
+        myrequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplication(), RequestWindow.class);
+                intent.putExtra("userType", "myRequest");
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            }
+        });
         calculate = findViewById(R.id.calculate);
         calculate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -589,7 +616,7 @@ class  ProcessDonors extends AsyncTask<String, Integer, String> {
         cur.close();
 
         cur =dbHelper.getAUserRequest(loginPhone);
-        prequest.setText(cur.getCount() + " Total Blood Request ");
+        prequest.setText("You Have Created " + cur.getCount() + " Blood Request ");
         cur.close();
 
         final Dialog d = new Dialog(HomeScreen.this);
