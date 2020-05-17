@@ -56,7 +56,7 @@ public class HomeScreen extends AppCompatActivity implements AdapterView.OnItemS
     DatePickerDialog.OnDateSetListener setListener;
     int year, month, day;
     LinearLayout myprofile,updateprofile,createrequest,about,calculate,updatebank,
-    delete, donors,bloodbank,hospital,myrequest, emergency, allrequest;
+    delete, donors,bloodbank,hospital,myrequest, emergency, allrequest,facts;
     int alldone = 0;
     String userType;
     @Override
@@ -542,6 +542,17 @@ class  ProcessDonors extends AsyncTask<String, Integer, String> {
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
+
+        facts = findViewById(R.id.facts);
+        facts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplication(), FactList.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            }
+        });
+
         calculate = findViewById(R.id.calculate);
         calculate.setOnClickListener(new View.OnClickListener() {
             @Override

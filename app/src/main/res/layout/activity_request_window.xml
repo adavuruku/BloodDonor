@@ -23,9 +23,7 @@
             android:inputType="text"
             android:background="@color/colorPrimary"
             android:queryHint="State / Local Government / Blood Type"
-            android:iconifiedByDefault="false">
-            <requestFocus/>
-        </SearchView>
+            android:iconifiedByDefault="false"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

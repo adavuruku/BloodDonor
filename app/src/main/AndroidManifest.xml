@@ -17,11 +17,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="LockedOrientationActivity">
-        <activity android:name=".RequestWindow"></activity>
-        <activity android:name=".ListHospitals" />
+        <activity android:name=".FactList"
+            android:label="Facts About Blood Donation"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".RequestWindow"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ListHospitals"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ListDonors"
-            android:label="Search Blood Donors">
+            android:label="Search Blood Donors"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -30,13 +37,16 @@
         </activity>
         <activity
             android:name=".createRequest"
-            android:label="" />
+            android:label=""
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".updateHospital"
-            android:label="" />
+            android:label=""
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".updateProfile"
-            android:label="" />
+            android:label=""
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".HomeScreen"
             android:label="@string/dashboard"

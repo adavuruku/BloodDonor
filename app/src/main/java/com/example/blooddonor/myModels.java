@@ -232,4 +232,16 @@ public class myModels {
             return bloodtype;
         }
     }
+
+    public class Facts{
+        String facts;
+
+        public Facts(String facts) {
+            this.facts = facts;
+        }
+
+        public String getFacts() {
+            return facts;
+        }
+    }
 }
