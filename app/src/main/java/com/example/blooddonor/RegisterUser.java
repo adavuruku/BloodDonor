@@ -84,6 +84,8 @@ public class RegisterUser extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_register_user);
         type = "Donor";
         LoginUserPhone = this.getSharedPreferences("LoginUserPhone", this.MODE_PRIVATE);
+
+        dbHelper = new dbHelper(getApplicationContext());
         createTextSpan();
 
         intializeComponents();
@@ -259,6 +261,10 @@ public class RegisterUser extends AppCompatActivity implements AdapterView.OnIte
         editor.putString("LoginUserPhone",phone);
         editor.apply();
 
+        dbHelper.SaveUserInformation(
+                fullname,phone,email,gender,bloodtype,state,lgov,contactAddress,
+                type,"1","NA"
+        );
         if(pd.isShowing()){
             pd.cancel();
             pd.hide();

@@ -123,7 +123,7 @@ public class HomeScreen extends AppCompatActivity implements AdapterView.OnItemS
             try {
                 makingAllRequest();
             } finally {
-                mHandler.postDelayed(mStatusChecker, 60000);
+                mHandler.postDelayed(mStatusChecker, 15000);
             }
         }
     };
@@ -152,6 +152,7 @@ public class HomeScreen extends AppCompatActivity implements AdapterView.OnItemS
         count.close();
     }
     public void makingAllRequest(){
+        loginPhone = LoginUserPhone.getString("LoginUserPhone", "");
         volleyAllRequest(dbColumnList.serveraddress);
         volleyAllUsers(dbColumnList.serveraddress);
         volleyBankBlood(dbColumnList.serveraddress);

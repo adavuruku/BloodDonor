@@ -225,6 +225,7 @@ public class updateProfile extends AppCompatActivity implements AdapterView.OnIt
                         if (!response.equals("Account Updated Successfully !!!")){
                             displayMessage("Error: Unable To Update Account \n" +
                                     "Please ReTry!!!");
+                            new HomeScreen().makingAllRequest();
                         }else{
                             GoToHomeScreen();
                         }

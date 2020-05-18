@@ -91,6 +91,7 @@ public class RegisterHospital extends AppCompatActivity implements AdapterView.O
         validator = new Validator(this);
         validator.setValidationListener(this);
 
+        dbHelper = new dbHelper(getApplicationContext());
 
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this,
                 R.array.statesList, android.R.layout.simple_list_item_checked);
@@ -243,6 +244,11 @@ public class RegisterHospital extends AppCompatActivity implements AdapterView.O
         editor = LoginUserPhone.edit();
         editor.putString("LoginUserPhone",phone);
         editor.apply();
+
+        dbHelper.SaveUserInformation(
+                fullname,phone,email,"NA","NA",state,lgov,contactAddress,
+                type,"1","NA"
+        );
 
         if(pd.isShowing()){
             pd.cancel();

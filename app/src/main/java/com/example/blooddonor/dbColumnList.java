@@ -9,6 +9,7 @@ import android.provider.BaseColumns;
 public class dbColumnList {
     public static String serveraddress = "https://antenantal.000webhostapp.com/blooddonorrest.php";
     public static String fromlogin;
+    public static String loginPhone;
 
     public static final String allfacts[] ={
             "About 1 in 7 people entering a hospital need blood.",
